@@ -1,0 +1,151 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "name": "Agent Commerce Kit",
+  "theme": "palm",
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "favicon": "/favicon.svg",
+  "colors": {
+    "primary": "#1D4ED8",
+    "light": "#3B82F6",
+    "dark": "#1E3A8A"
+  },
+  "seo": {
+    "metatags": {
+      "author": "Catena Labs",
+      "category": "Technology",
+      "language": "en",
+      "twitter:creator": "@catena_labs",
+      "twitter:image": "https://catenalabs.com/assets/agentcommercekit/opengraph.png",
+      "og:image": "https://catenalabs.com/assets/agentcommercekit/opengraph.png",
+      "og:locale": "en_US",
+      "robots": "index, follow",
+      "googlebot": "index, follow",
+      "keywords": "Agent Commerce Kit, ACK, Agent Commerce, Agentic Commerce, AI Agents, AI Commerce, AI Payments, AI Identity, AI Agentic Commerce, AI Agentic Payments, AI Agentic Identity"
+    }
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "ACK Overview",
+            "pages": [
+              "overview/introduction",
+              "overview/concepts",
+              "overview/architecture",
+              "overview/future-directions",
+              "overview/references"
+            ]
+          },
+          {
+            "group": "ACK-ID",
+            "pages": [
+              "ack-id/introduction",
+              "ack-id/identity-model",
+              "ack-id/standards",
+              "ack-id/use-case-verification",
+              "ack-id/lifecycle-management",
+              "ack-id/trust-framework",
+              "ack-id/security-privacy",
+              "ack-id/implementation-challenges",
+              "ack-id/future-directions"
+            ]
+          },
+          {
+            "group": "ACK-Pay",
+            "pages": [
+              "ack-pay/introduction",
+              "ack-pay/use-cases",
+              "ack-pay/components-roles",
+              "ack-pay/core-payment-sequences",
+              "ack-pay/server-initiated-sequence",
+              "ack-pay/client-initiated-sequence",
+              "ack-pay/payment-service",
+              "ack-pay/payment-request-payload",
+              "ack-pay/receipt-verification",
+              "ack-pay/hitl",
+              "ack-pay/operational-considerations",
+              "ack-pay/summary"
+            ]
+          },
+          {
+            "group": "Resources",
+            "pages": [
+              "resources/contributing",
+              "resources/license",
+              "resources/versioning"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Code",
+        "groups": [
+          {
+            "group": "ACK Reference Code",
+            "pages": ["demos/quickstart"]
+          },
+          {
+            "group": "Demos",
+            "pages": [
+              "demos/demos",
+              "demos/demo-identity",
+              "demos/demo-payments",
+              "demos/demo-e2e"
+            ]
+          },
+          {
+            "group": "Code Examples",
+            "pages": [
+              "demos/examples",
+              "demos/example-local-did-host",
+              "demos/example-identity",
+              "demos/example-verifier"
+            ]
+          },
+          {
+            "group": "Resources",
+            "pages": [
+              "resources/contributing",
+              "resources/license",
+              "resources/versioning"
+            ]
+          }
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Github",
+          "href": "https://github.com/agentcommercekit/ack",
+          "icon": "github"
+        },
+        {
+          "anchor": "Slack",
+          "href": "https://join.slack.com/t/catenalabscommunity/shared_invite/zt-35o31b0r8-RvnEPFaGHqYIkFs6k5QjTA",
+          "icon": "slack"
+        },
+        {
+          "anchor": "Blog",
+          "href": "https://catenalabs.com/blog",
+          "icon": "newspaper"
+        }
+      ]
+    }
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/agentcommercekit/ack"
+    }
+  },
+  "integrations": {
+    "ga4": {
+      "measurementId": "G-750FMLTGQ1"
+    }
+  }
+}

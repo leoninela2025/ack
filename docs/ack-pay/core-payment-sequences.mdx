@@ -1,0 +1,16 @@
+---
+title: "Core Payment Sequences"
+description: "The two primary interaction patterns for initiating payments in ACK-Pay."
+---
+
+ACK-Pay supports two primary interaction patterns for initiating payments, both centered around a standard [Payment Request](/ack-pay/payment-request-payload) payload:
+
+1. **Server-Initiated Sequence:** A Server (or Service Provider) requires payment from a Client agent before granting access to a resource or completing an action. In this flow, the **Server generates and sends** the Payment Request to the Client, typically in response to an initial resource request. This is common for pay-per-use APIs or accessing paid content.
+
+   [Learn more about the Server-Initiated Sequence →](/ack-pay/server-initiated-sequence)
+
+2. **Client-Initiated Sequence:** A Client agent initiates a payment based on an external trigger or known obligation (e.g., paying an invoice, completing an e-commerce checkout, fulfilling a human end-user’s instructions). In this flow, the **Client agent constructs** the Payment Request itself, often by parsing external information (like an invoice or checkout summary) and potentially using a Payment Service to help formulate the request details before interacting with the Payment Service API for execution.
+
+   [Learn more about the Client-Initiated Sequence →](/ack-pay/client-initiated-sequence)
+
+Both sequences leverage the same core [Components and Roles](/ack-pay/components-roles) (Client, Server, Payment Service, Receipt Service, Settlement Networks) and the [ACK Receipt](/ack-pay/receipt-verification) for verification.

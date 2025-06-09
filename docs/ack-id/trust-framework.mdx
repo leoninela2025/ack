@@ -1,0 +1,14 @@
+---
+title: Trust Framework
+description: Establishing trust in ACK-ID through Verifiable Credentials and issuer policies.
+---
+
+Trust within ACK-ID is established by verifying the digital signatures on Verifiable Credentials (VCs) and determining whether the **Issuer** of a specific credential is authoritative for the claims being made.
+
+Implementations must define policies specifying which issuers they trust for different types of information. Examples include trusting a government authority for legal entity verification, a financial institution for account linkage, or an internal system for agent capability attestation. This concept of trusted issuers acts as the **root of trust** for verifying claims.
+
+Crucially, this verification relies on cryptography and publicly available information (like the issuer's DID document containing their public keys), allowing a **Verifier** to validate a credential **without needing to contact the original Issuer directly**. This enhances privacy compared to centralized systems where callbacks might reveal when and where credentials are used.
+
+Furthermore, mechanisms are needed to enable trust across different organizational boundaries. This might involve shared trust lists maintained by consortia, standardized federation protocols, or other methods allowing agents from different ecosystems to validate each other's credentials based on mutual agreements or shared policies.
+
+This policy-driven approach allows for flexible yet secure trust relationships tailored to specific use cases and risk appetites.

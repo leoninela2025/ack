@@ -1,0 +1,61 @@
+{
+  "name": "@repo/api-utils",
+  "version": "0.0.1",
+  "private": true,
+  "homepage": "https://github.com/agentcommercekit/ack#readme",
+  "bugs": "https://github.com/agentcommercekit/ack/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agentcommercekit/ack.git",
+    "directory": "tools/api-utils"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Catena Labs",
+    "url": "https://catenalabs.com"
+  },
+  "type": "module",
+  "exports": {
+    "./package.json": "./package.json",
+    "./api-response": {
+      "types": "./src/api-response.ts",
+      "import": "./src/api-response.ts"
+    },
+    "./exceptions": {
+      "types": "./src/exceptions.ts",
+      "import": "./src/exceptions.ts"
+    },
+    "./middleware/*": {
+      "types": "./src/middleware/*.ts",
+      "import": "./src/middleware/*.ts"
+    },
+    "./validate-payload": {
+      "types": "./src/validate-payload.ts",
+      "import": "./src/validate-payload.ts"
+    }
+  },
+  "main": "./src/index.ts",
+  "scripts": {
+    "check:types": "tsc --noEmit --pretty",
+    "clean": "git clean -fdX .turbo",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@agentcommercekit/ack-pay": "workspace:*",
+    "@agentcommercekit/did": "workspace:*",
+    "@agentcommercekit/jwt": "workspace:*",
+    "@agentcommercekit/keys": "workspace:*",
+    "@agentcommercekit/vc": "workspace:*",
+    "hono": "^4.7.10",
+    "valibot": "^1.1.0"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "eslint": "^9.27.0",
+    "typescript": "^5",
+    "vitest": "^3.1.4"
+  }
+}

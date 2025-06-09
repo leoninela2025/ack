@@ -1,0 +1,99 @@
+---
+title: "Receipt Verification & Presentation"
+description: "Using ACK Receipts (Verifiable Credentials) for payment proof."
+---
+
+A core component of ACK-Pay is the verifiable proof of payment. The ACK Receipt system provides cryptographically secure proof using W3C Verifiable Credentials (VCs). This allows Server Agents or other relying parties to validate payments reliably without needing direct access to underlying payment systems or trusting the Client Agent's claim alone.
+
+## ACK Receipt Format (Verifiable Credential)
+
+ACK Receipts are structured as Verifiable Credentials. This provides several benefits:
+
+- **Standardization:** Leverages the mature W3C VC data model.
+- **Cryptographic Security:** Receipts are digitally signed by a trusted Receipt Service, ensuring authenticity and integrity.
+- **Interoperability:** Can be processed and verified by any system understanding the VC data model.
+- **Selective Disclosure:** Allows for future extensions where only specific parts of the receipt might be shared (though typically the full receipt is needed for payment verification).
+
+_Example ACK Receipt Verifiable Credential:_
+
+```json
+{
+  "@context": [
+    "https://www.w3.org/2018/credentials/v1",
+    "https://agentcommerkit.org/contexts/payment/v1" // Example ACK context
+  ],
+  "id": "urn:uuid:5c358383-1d93-4956-8d0c-6e41e4d29901", // Unique receipt ID
+  "type": ["VerifiableCredential", "ACKPaymentReceipt"],
+  "issuer": "did:web:receipts.example.com", // DID of the trusted Receipt Service
+  "issuanceDate": "2025-04-04T14:22:18Z",
+  "credentialSubject": {
+    // ID of the entity that made the payment (Client Agent DID)
+    "id": "did:key:z6MkmCJAZansQ3d7Mi6moQoAFj6vpuPP9e4vWKsjWEY4Hd9t",
+    "paymentToken": "<signed-representation-of-the-payment-request-structure>",
+    "paymentOptionId": "unique-payment-option-id-123", // The payment option that was used to make the payment
+    "metadata": {
+      // Additional metadata about the payment, depending on the payment option
+      "amount": 1000, // Final settled amount (e.g., 10.00 USD)
+      "currency": "USD", // Final settled currency
+      "decimals": 2,
+      // Identifier of the ultimate recipient (e.g., Server Agent DID or account)
+      "recipient": "did:web:service.example.com",
+      "id": "unique-request-id-123", // Links back to the Payment Request (if applicable)
+      "serviceDescription": "Premium API access (100 credits)", // From original request (if applicable)
+      "timestamp": "2025-04-04T14:22:15Z" // Timestamp of successful settlement
+      // Optionally include settlement transaction hash/ID if relevant
+      // "settlementRef": "stripe_charge_id_xyz"
+    }
+  },
+  "proof": {
+    // Standard VC proof (digital signature)
+    "type": "Ed25519Signature2020",
+    "created": "2025-04-04T14:22:18Z",
+    "verificationMethod": "did:web:receipts.example.com#key-1",
+    "proofPurpose": "assertionMethod",
+    "proofValue": "z3..." // Signature value
+  }
+}
+```
+
+<Tip>
+  See the [W3C Verifiable Credentials Data
+  Model](https://www.w3.org/TR/vc-data-model/) specification for more details on
+  the general structure.
+</Tip>
+
+## Receipt Verification Process
+
+When an ACK Receipt is presented by a Client Agent to a Server Agent (e.g., when retrying a request after payment), the Server performs these verification steps:
+
+<Steps>
+  <Step title="Validate Signature">
+    Verify the cryptographic signature (`proof`) on the VC using the public key
+    associated with the `issuer`'s DID. This ensures the receipt hasn't been
+    tampered with since issuance.
+  </Step>
+  <Step title="Confirm Issuer Trust">
+    Check if the `issuer` DID (e.g., `did:web:receipts.example.com`) is present
+    in the Server's configured list of trusted Receipt Services for the relevant
+    context or payment method.
+  </Step>
+  <Step title="Check Revocation Status">
+    Verify that the receipt has not been revoked by the issuer. This typically
+    involves checking a revocation mechanism specified by the Receipt Service
+    (e.g., querying a status list endpoint).
+  </Step>
+  <Step title="Verify Payment Details">
+    Examine the claims within `credentialSubject.paymentToken`,
+    `credentialSubject.paymentOptionId`, and `credentialSubject.metadata` to
+    ensure they match the service requirements: - Is the original `paymentToken`
+    valid and correctly signed? - Is the `paymentOptionId` valid and matches an
+    expected payment option? - Is the `recipient` correct (e.g., does it match
+    the Server Agent's expected identifier)? - Is the `amount`, `currency`, and
+    `decimals` sufficient for the requested service? - Does the `id` match the
+    one originally issued (if applicable in a Server-Initiated flow)? - Are the
+    credential `issuanceDate` and settlement `timestamp` values recent enough,
+    or has the receipt potentially expired based on policy?
+  </Step>
+</Steps>
+If all these checks pass, the Server can confidently treat the payment as valid
+and proceed with service delivery.

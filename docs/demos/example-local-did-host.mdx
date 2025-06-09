@@ -1,0 +1,53 @@
+---
+title: Local DID Host Example
+description: "An example of how to serve did:web documents locally for ACK development."
+---
+
+## Overview
+
+The **local-did-host** is a simple [Hono](https://hono.dev) server designed to serve `did:web` documents locally, which is useful for local development.
+
+The server dynamically serves `.well-known/did.json` routes, enabling local testing and development of DID documents. It supports subpaths for multiple identities, such as `/agent/.well-known/did.json` and `/controller/.well-known/did.json`, served by default at `0.0.0.0:3458`.
+
+The DID Documents created here are dynamic and intended only for development purposes. Static serving is more appropriate for production.
+
+## Installation and Setup
+
+Generate private keys for local identities.
+
+From within the example directory (e.g., from project root: `./examples/local-did-host`) execute the setup:
+
+```sh
+pnpm run setup
+```
+
+## Running the Server
+
+Start the local server:
+
+```sh
+pnpm run dev
+```
+
+The server is accessible at: [http://0.0.0.0:3458](http://0.0.0.0:3458)
+
+## Available Identities
+
+Default served identities:
+
+| Entity       | DID URI                             | Resolved URL                                                                                               |
+| ------------ | ----------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `agent`      | did\:web:0.0.0.0%3A3458\:agent      | [http://0.0.0.0:3458/agent/.well-known/did.json](http://0.0.0.0:3458/agent/.well-known/did.json)           |
+| `controller` | did\:web:0.0.0.0%3A3458\:controller | [http://0.0.0.0:3458/controller/.well-known/did.json](http://0.0.0.0:3458/controller/.well-known/did.json) |
+
+## How `did:web` Resolution Works
+
+Resolving a `did:web` DID involves fetching `.well-known/did.json` from the indicated domain or subpath. Examples:
+
+- `did:web:example.com` resolves to `https://example.com/.well-known/did.json`
+- `did:web:example.com:special` resolves to `https://example.com/special/.well-known/did.json`
+
+## References
+
+- [This Example's Source Code](https://github.com/agentcommercekit/ack/tree/main/examples/local-did-host)
+- [DID Web Specification](https://w3c-ccg.github.io/did-method-web/)

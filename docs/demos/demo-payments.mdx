@@ -1,0 +1,92 @@
+---
+title: ACK-Pay Payments Demo
+description: "Interactive guide demonstrating ACK-Pay payment flows."
+---
+
+## Overview
+
+**ACK-Pay** is a protocol built on W3C Standards designed to facilitate secure, verifiable, and interoperable financial transactions among autonomous agents, services, and human participants.
+
+This interactive command-line demo illustrates the [**Server-Initiated payment flow**](/ack-pay/server-initiated-sequence), including:
+
+- A **Client Agent** attempting to access a protected resource.
+- A **Server Agent** issuing a Payment Request.
+- The Client making a payment.
+- A **Receipt Service** verifying the payment and issuing a receipt (in the form of a Verifiable Credential).
+- Client using the receipt to access the protected resource.
+
+## Demo Video
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/49VaG1-u1i0"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+></iframe>
+
+## Getting Started
+
+Before running this demo, follow the [Quickstart Guide](./quickstart) at the repository root.
+
+## Running the Demo
+
+Run from the repository root:
+
+```sh
+pnpm run demo:payments
+```
+
+Alternatively, run from within the demo directory (`./demos/payments`):
+
+```sh
+pnpm start
+```
+
+## ACK-Pay Demo Components
+
+- **Client**: The interactive agent requesting access to resources and making payments.
+- **Server**: An HTTP server protecting resources and issuing payment requests.
+- **Receipt Service**: HTTP service validating payments and issuing verifiable receipts (VCs).
+- **Payment Service** (illustrated in optional paths): Handles credit card payments, currency conversion, compliance checks (KYC/AML), and complex payment routing.
+
+## Demo Walkthrough
+
+The interactive CLI guides you through these steps:
+
+<Steps>
+<Step title="Resource Request">
+Client requests access to a protected resource. Server responds with an HTTP `402 Payment Required` status containing a `PaymentRequest`.
+</Step>
+
+<Step title="Making Payment">
+  Client performs an on-chain stablecoin (USDC) payment to the Server’s wallet
+  on Base Sepolia testnet. Alternatively, a credit card payment can be handled
+  via a Payment Service.
+</Step>
+
+<Step title="Receipt Request">
+  After payment completion, Client requests a receipt (VC) from the Receipt
+  Service by providing proof of payment.
+</Step>
+
+<Step title="Receipt Verification">
+  Receipt Service verifies provided transaction details and issues a Receipt
+  Credential.
+</Step>
+
+<Step title="Accessing the Resource">
+  Client retries accessing the resource, presenting the receipt to the Server.
+  Server verifies receipt authenticity and grants resource access.
+</Step>
+</Steps>
+
+## Further Exploration
+
+Explore comprehensive ACK-Pay functionalities and integrations in real-world applications involving diverse payment methods and Payment Service integrations:
+
+- [View Payments Demo Source Code](https://github.com/agentcommercekit/ack/tree/main/demos//payments)
+- [ACK Documentation](https://agentcommercekit.com)
+- [ACK-Pay Details](/ack-pay/introduction)

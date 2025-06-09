@@ -1,0 +1,78 @@
+---
+title: End-to-End Demo
+description: "Comprehensive example demonstrating combined ACK-ID and ACK-Pay protocol flows."
+---
+
+## Overview
+
+This End-to-End (E2E) demo showcases the integration and seamless interaction between ACK's core protocols:
+
+- **ACK-ID** (Identity Management)
+- **ACK-Pay** (Payment Processing)
+
+Through this interactive command-line demo, you'll observe a realistic flow demonstrating secure agent identity verification alongside automated, verifiable payment transactions.
+
+## Getting Started
+
+Before running this demo, please complete the setup steps from the [Quickstart Guide](./quickstart).
+
+## Running the Demo
+
+You can run the E2E demo using the following command from the repository root:
+
+```sh
+pnpm demo:e2e
+```
+
+Alternatively, navigate directly into the demo directory (`./demos/e2e`) and run:
+
+```sh
+pnpm start
+```
+
+## Demo Overview
+
+The demo walks you through a scenario where:
+
+<Steps>
+<Step title="Agent Initialization">
+Agents (Client and Server) and their respective owners initialize their identities using ACK-ID standards (Decentralized Identifiers and Verifiable Credentials).
+</Step>
+
+<Step title="Identity Verification">
+  Client Agent and Server Agent verify each other's identities securely and
+  efficiently before initiating transactions (utilizing ACK-ID).
+</Step>
+
+<Step title="Payment Request">
+  Server Agent requires payment from the Client Agent (utilizing ACK-Pay),
+  issuing a formal Payment Request specifying acceptable payment methods.
+</Step>
+
+<Step title="Payment Execution">
+  Client Agent completes the payment transaction, showcasing automated payment
+  verification.
+</Step>
+
+<Step title="Receipt Issuance and Verification">
+  Upon successful payment, a receipt Service issues a cryptographically
+  verifiable receipt.
+</Step>
+
+<Step title="Resource Access">
+Using the receipt, the Client Agent successfully accesses the requested resource from the Server Agent.
+</Step>
+</Steps>
+
+## Key Components Demonstrated
+
+- Integrated Identity Verification (ACK-ID)
+- Payment Initiation, Processing, and Receipt Verification (ACK-Pay)
+- Secure Agent-to-Agent interaction with cryptographic validation
+
+## Further Exploration
+
+- [View End-to-End Demo Source Code](https://github.com/agentcommercekit/ack/tree/main/demos/e2e)
+- [ACK Documentation](https://agentcommercekit.com)
+- [ACK-ID Protocol Details](/ack-id/introduction)
+- [ACK-Pay Details](/ack-pay/introduction)

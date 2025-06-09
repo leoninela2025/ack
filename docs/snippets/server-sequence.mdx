@@ -1,0 +1,50 @@
+```mermaid
+%%{ init: { 'theme': 'mc', 'themeVariables': { 'primaryColor': '#1D4ED8', 'lineColor': '#374151', 'textColor': '#1f2937', 'sequenceMessageAlign': 'center' } } }%%
+sequenceDiagram;
+    participant CA as Client Agent;
+    participant SA as Server Agent;
+    participant PS as Payment Service;
+    participant RS as Receipt Service;
+    participant SN as Settlement Network;
+
+    CA->>SA: 1: Request Resource;
+
+    rect rgba(0, 0, 255, .03)
+        SA-->>CA: Request Proof of Agency;
+        CA-->>SA: Present Identity Proof;
+        Note right of SA: Verify Client Identity;
+    end
+
+    SA->>CA: 2: Payment Request;
+
+    rect rgba(0, 0, 255, .03)
+        CA-->>SA: Request Proof of Agency;
+        SA-->>CA: Present Identity Proof;
+        Note right of CA: Verify Server Identity;
+    end
+
+    CA->>PS: 3: Initiate Payment;
+
+    rect rgba(0, 0, 255, .03)
+        PS-->>CA: Request Proof of Agency;
+        CA-->>PS: Present Identity Proof & Request Server Proof of Agency;
+        Note right of PS: Verify Client Identity;
+        PS-->>CA: Present Identity Proof;
+        Note right of CA: Verify Payment Service Identity;
+    end
+
+    PS<<-->>CA: Potential human-in-the-loop approvals
+    PS->>SN: 4: Execute/Settle;
+    %% Note: Settlement confirmation back to PS is implied %%
+    PS->>RS: 5: Request Receipt;
+    RS-->>PS: Issue Receipt (VC);
+    PS-->>SA: Deliver receipt via optional callback
+    PS->>CA: 6: Deliver Receipt;
+    CA->>SA: 7: Present Receipt;
+    SA-->>SA: Verify Receipt;
+    %% Note: Verification uses VC crypto & issuer's public info, NO callback to RS needed %%
+    SA->>CA: 8: Deliver Resource;
+
+```
+
+_To enlarge this mermaid markdown diagram, zoom in on your browser (CMD +)_

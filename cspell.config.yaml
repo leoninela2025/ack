@@ -1,0 +1,14 @@
+language: en
+words:
+  - agentcommercekit
+  - bitstring
+  - caip
+  - dbname
+  - healthcheck
+  - keypair
+  - multibase
+  - multicodec
+  - solana
+  - valibot
+  - varint
+  - viem

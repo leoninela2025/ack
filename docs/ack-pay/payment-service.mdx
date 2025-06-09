@@ -1,0 +1,56 @@
+---
+title: "Payment Service"
+description: "The role, capabilities, and integration points for ACK Payment Services."
+---
+
+import { Icon, Info } from "@mintlify/components"
+
+## The Role of the Payment Service
+
+The **Payment Service** is a crucial component within the Agent Commerce Kit (ACK) architecture. It acts as the engine for executing financial transactions according to the ACK-Pay pattern, abstracting the complexities of underlying payment rails and settlement networks away from Client and Server Agents.
+
+Whether handling a [Server-Initiated](/ack-pay/server-initiated-sequence) or a [Client-Initiated](/ack-pay/client-initiated-sequence) payment, the Client Agent interacts primarily with a designated Payment Service endpoint to fulfill the payment obligation. Server Agents do not gain access to sensitive payment or counterparty information.
+
+## Core Responsibilities
+
+A Payment Service handles several key functions:
+
+- **Payment Execution & Settlement:** Interacting directly with various [Settlement Networks](/ack-pay/components-roles#settlement-networks) (e.g., card networks, blockchains, banking systems) to move funds according to the authorized payment details.
+- **Abstraction Layer:** Hiding the specific requirements and APIs of different payment rails from the Client and Server Agents. The Client interacts with the common ACK pattern, and the Payment Service handles the Settlement layer and other back-end integrations.
+- **Currency/Asset Conversion & Bridging:** Performing conversions between different fiat currencies, stablecoins, or other digital assets. This includes bridging between different types of rails (e.g., accepting cryptocurrency and settling via virtual card).
+- **Compliance & Risk Management:** Integrating necessary checks, such as verifying agent identity via [ACK-ID](/ack-id/introduction), performing KYC/KYB/AML checks, assessing transaction risk, and enforcing compliance policies based on jurisdiction or transaction type.
+- **Human Oversight Integration:** Providing the hooks and managing the workflows for [human approvals](/ack-pay/hitl) based on predefined policies (e.g., transaction value limits).
+- **Receipt Coordination:** Interacting with a designated [Receipt Service](/ack-pay/components-roles#receipt-service) to request the issuance of a verifiable ACK Receipt upon successful payment settlement.
+- **Request Assistance:** Optionally providing API endpoints to help agents construct well-formed Payment Request payloads from unstructured data like invoices or user instructions.
+
+## Feature Options
+
+Payment Services act as the integration points between AI agents and the diverse landscape of existing payment systems:
+
+- **Traditional Rails:** Integrating with ACH, Wire, SEPA, and other bank transfer networks.
+- **Card Payments:** Utilizing APIs from providers like Stripe or PayPal to process card payments or integrating directly with emerging agent-focused solutions like [Visa Intelligent Commerce](https://corporate.visa.com/en/products/intelligent-commerce.html) or [Mastercard Agent Pay](https://www.mastercard.com/news/press/2025/april/mastercard-unveils-agent-pay-pioneering-agentic-payments-technology-to-power-commerce-in-the-age-of-ai/).
+- **Blockchain Protocols:**
+  - Handling payments directly on various blockchain networks using stablecoins (USDC, EURC, etc.) or other digital assets.
+  - Bridging to other payment protocols. For example, an ACK Payment Service could expose the necessary endpoints to function as an [x402 Facilitator](https://github.com/coinbase/x402) for Servers using that standard. Integration with protocols like Lightning Network (L402) or Fewsats could also be explored via this layer.
+- **Nascent Networks:** Future Payment Services, particularly those operated by regulated financial institutions, could integrate with emerging networks like the [Circle Payment Network](https://www.circle.com/cpn) to leverage new settlement capabilities.
+
+## Cross-Currency Capabilities
+
+A Payment Service may act as an intermediary responsible for managing currency conversions, potentially using specified exchange rates and transparently handling associated fees. This allows a Client Agent to pay using one currency while the Server Agent or ultimate recipient receives settlement in another preferred currency. These capabilities are particularly valuable for agents operating across jurisdictional boundaries or in multi-currency environments.
+
+### Example: Bridging & Conversion
+
+The Payment Service enables powerful bridging scenarios. For instance, a Client Agent holding EURC can interact with a Payment Service that accepts EURC, convert it internally to USD, generate a single-use virtual credit card (VCC), and use that VCC to pay a Server Agent who accepts only USD card payments. The complexity of the conversion and VCC generation is handled entirely by the Payment Service.
+
+<Info>
+  If fees are involved in bridging or FX conversions, the Payment Service should
+  transparently communicate these to the Client during the payment process.
+</Info>
+
+## Discovery
+
+While a Client Agent might be pre-configured to use a specific Payment Service, it's also possible for agents to discover available Payment Services dynamically. Registries or discovery mechanisms could allow Clients to find services based on supported features (e.g., specific pay-in/pay-out rails, currency pairs), transaction fees, settlement speed, reputation, or required compliance certifications, enabling them to choose the optimal service for a given transaction.
+
+## Reference Implementation
+
+The [ACK GitHub repository](http://github.com/agentcommercekit/ack) provides reference implementations and code examples, including conceptual implementations of Payment Service interactions used in the [Demos](/demos). These resources can help developers understand the patterns and accelerate integration.

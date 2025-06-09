@@ -1,0 +1,68 @@
+---
+title: "Implementation Challenges"
+description: "Common challenges and mitigation strategies when implementing ACK-ID."
+---
+
+Organizations implementing ACK-ID may encounter several common challenges when working with decentralized identity concepts like DIDs and VCs. Planning for these can help ensure a smoother deployment.
+
+### Key Management
+
+Secure management of the cryptographic private keys associated with DIDs is critical but often complex, especially at scale. Compromised keys can lead to identity theft and unauthorized actions.
+
+<Tip>
+  **Mitigation:** Use established enterprise key management systems (KMS),
+  consider hardware security modules (HSMs) for high-value Owner or critical
+  Agent keys, implement robust key rotation policies, and enforce strict access
+  controls based on the principle of least privilege. Ensure keys are
+  appropriately isolated from less secure application components.
+</Tip>
+
+### Trust Anchor Establishment
+
+Determining which credential issuers (trust anchors) to trust for specific claims requires careful policy definition and ongoing governance. How do you decide which regulatory body's VC to accept, or which internal system is authoritative for specific agent capabilities?
+
+<Tip>
+  **Mitigation:** Start with a limited set of well-established trust anchors
+  (e.g., known government issuers, specific internal authorities). Establish
+  clear governance processes for evaluating and onboarding new trusted issuers.
+  Consider implementing tiered trust levels based on the verification depth or
+  the criticality of the claim being asserted.
+</Tip>
+
+### Revocation Efficiency
+
+Checking credential revocation status (ensuring a presented credential hasn't been invalidated since issuance) efficiently and in real-time can be demanding, potentially creating performance bottlenecks if not designed carefully.
+
+<Tip>
+  **Mitigation:** Utilize efficient, standardized revocation methods like W3C
+  Status List 2021, which minimize the need for direct issuer lookups during
+  verification. Implement appropriate caching strategies for revocation
+  information with suitable time-to-live (TTL) settings. Consider using
+  short-lived credentials for highly sensitive operations where near real-time
+  revocation checking is paramount.
+</Tip>
+
+### Privacy vs. Compliance Tension
+
+Balancing the privacy benefits of selective disclosure (inherent in VCs) with regulatory requirements (which may demand more comprehensive identity data for KYC/AML) can be challenging.
+
+<Tip>
+  **Mitigation:** Carefully design VC schemas to separate different types of
+  claims, allowing presentation of only what's necessary. Leverage the selective
+  disclosure capabilities of VCs during presentation. Implement clear data
+  retention and access control policies aligned with relevant privacy and
+  financial regulations (e.g., GDPR, CCPA).
+</Tip>
+
+### Integration with Legacy Systems
+
+Connecting ACK-ID concepts (DIDs, VCs) with existing enterprise identity and access management (IAM) systems, user directories, or HR systems often requires careful planning and integration effort.
+
+<Tip>
+  **Mitigation:** Explore using identity federation adapters or protocols (like
+  SAML or OpenID Connect bridges) where appropriate. Plan for progressive
+  migration strategies rather than a wholesale replacement. Maintain
+  compatibility layers or custom integration points during transition periods to
+  ensure smooth interoperability between new ACK-ID based systems and legacy
+  infrastructure.
+</Tip>

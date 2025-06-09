@@ -1,0 +1,29 @@
+---
+title: "Human Oversight Integration"
+description: "Integrating human oversight and approval into ACK-Pay payment flows."
+---
+
+While ACK-Pay aims to facilitate automated agent commerce, it acknowledges the critical need for human judgment and control, particularly in situations involving significant financial value, risk, or compliance implications. Workflows allow for strategic human intervention points, typically managed and configured within the Payment Service or Client application policies.
+
+## Human Oversight Scenarios
+
+Examples where human oversight may be triggered include:
+
+- **Approval Workflows:** Routing transactions for manual approval if they exceed predefined value thresholds or involve counterparties risk-flagged for review.
+- **Exception Handling:** Escalating payments flagged by automated risk assessment systems (e.g., potential fraud or compliance issues) for human investigation.
+- **Audit Reviews:** Flagging completed transactions (e.g., randomly selected, high-value, or unusual patterns) for periodic human audit to ensure policy adherence and compliance.
+- **Policy Management:** Humans define and manage the policies that dictate transaction rules, risk thresholds, and approval requirements within the system.
+
+## Integration Points
+
+Human oversight may be integrated at three key points in the payment lifecycle:
+
+- **Pre-execution Approval:** Requiring explicit human sign-off _before_ a payment is initiated or executed by the Payment Service. This is common for high-value transactions or payments initiated by agents with limited spending authority.
+- **Post-execution Review:** Flagging completed transactions for later human review and auditing, without holding up the real-time execution.
+- **Exception Resolution:** Escalating failed, disputed, or problematic transactions for human intervention and resolution.
+
+## Human Approval Example Flow
+
+!["Example Human Intervention"](/images/human.png)
+
+Integrating these Human-in-the-Loop mechanisms allows organizations to balance the efficiency of automation with the accountability and guardrails provided by human oversight.

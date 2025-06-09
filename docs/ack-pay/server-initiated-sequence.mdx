@@ -1,0 +1,48 @@
+---
+title: "Server-Initiated Sequence"
+description: "Details of the ACK-Pay flow initiated by a Server requiring payment."
+---
+
+import ServerSequence from "/snippets/server-sequence.mdx"
+
+This flow is typically used when access to a resource or service requires immediate payment before fulfillment.
+
+## Sequence Steps
+
+1. **Client Request & Server Validation:** The Client Agent makes an API request to the Server Agent. The Server Agent may authenticate and validate the Client Agent (potentially using ACK-ID) and/or the Client Agent's end-user (e.g., using OAuth or API tokens).
+2. **Payment Request Initiation:** The Server Agent determines payment is needed. It uses a Payment Service (or generates by itself) the structured [Payment Request](/ack-pay/payment-request-payload). The Server Agent sends this Payment Request to the Client.
+   - _Delivery Method:_ The method of delivering the Payment Request depends on the underlying communication protocol:
+     - **Over HTTP:** Over HTTP, the idiomatic approach is to return an HTTP `402 Payment Required` status code, with the Payment Request JSON payload included in the response body.
+     - **Over Other Transports:** When using protocols like WebSockets, gRPC, or agent-to-agent communication frameworks (e.g., A2A), the Payment Request JSON payload should be embedded within the relevant application-level message or data structure used by that protocol.
+3. **Client Selects Payment Option & Contacts Payment Service:** The Client receives the Payment Request. It parses the `paymentOptions` array, selects a suitable option based on its capabilities and policy, and contacts the specified `paymentService` endpoint for that option.
+   <Info>
+     The payment options offered in the payload are those supported by the
+     specified Payment Service, which bridges to the Server's pay-out
+     requirements. Thus the payment options in a Payment Request are not
+     necessarily the same as those accepted by the Server that will ultimately
+     receive a payment.
+   </Info>
+4. **Optional: Additional Detail Negotiation:** The Client and Payment Service may exchange further details if needed (e.g., specific pay-in instructions or counterparty info requests). Mutual identity verification using ACK-ID may also occur in this stage.
+5. **Payment Execution & Conversion:** The Payment Service executes the Client’s inbound payment, performs any necessary conversions for settling with the Server Agent, and interacts with the underlying Settlement Network(s) appropriate for the payment type.
+6. **Receipt Generation:** Following successful settlement confirmation, the Payment Service obtains a signed ACK Receipt (as a Verifiable Credential) from its associated `receiptService`.
+7. **Receipt Delivery to Client:** The Client Agent receives the ACK Receipt from the Payment Service.
+8. **Receipt Presentation and Verification:** The Client Agent retries the original API request to the Server Agent (or sends a follow-up message), presenting the ACK Receipt (e.g., in an HTTP header or message payload).
+   - Optionally, a `serviceCallback` URL in the initial Payment Request might allow the Payment Service/Receipt Service to notify the Server directly, which may trigger Server execution or state updates without Client resubmission.
+9. **Service Delivery:** The Server verifies the presented ACK Receipt (checking signature, issuer trust, revocation status, and relevant details). Upon successful verification, the Server processes the API request and returns the premium financial data. The Client Agent can store the receipt for its records.
+
+## Sequence Diagram
+
+<ServerSequence />
+
+## Example: Paying for Premium API Access
+
+Consider a data analysis agent ("Client Agent") needing access to a premium, rate-limited financial data API ("Server Agent"):
+
+1. The Client Agent makes an API request to the Server Agent.
+2. After authenticating and validating the Client, the Server Agent determines payment is needed.
+3. The Server Agent uses a Payment Service to compose a Payment Request. The Server Agent sends the Payment Request to the Client (e.g., via HTTP 402), offering options like paying 10 USDC via Payment Service A or \$10 via Payment Service B which accepts credit cards.
+4. The Client Agent selects the USDC option and contacts Payment Service A. The Client Agent verifies the Payment Service's identity.
+5. Payment Service A receives the Client’s inbound USDC payment, executes any conversions necessary for settling with the Server Agent (if needed), and obtains a signed ACK Receipt from its associated Receipt Service.
+6. The Client Agent receives the ACK Receipt from Payment Service A.
+7. The Client Agent retries the original API request to the Server Agent, presenting the ACK Receipt (e.g., in an HTTP header).
+8. The Server Agent verifies the receipt's validity (signature, issuer, amount, etc.). If valid, it processes the API request and returns the premium financial data. The Client Agent can store this receipt to prove payment if needed later, until the Receipt expires (enabling a subscription until expiration).

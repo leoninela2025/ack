@@ -1,0 +1,78 @@
+{
+  "name": "@agentcommercekit/did",
+  "version": "0.1.0",
+  "homepage": "https://github.com/agentcommercekit/ack#readme",
+  "bugs": "https://github.com/agentcommercekit/ack/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agentcommercekit/ack.git",
+    "directory": "packages/did"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Catena Labs",
+    "url": "https://catenalabs.com"
+  },
+  "type": "module",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./schemas/zod": {
+      "types": "./dist/schemas/zod.d.ts",
+      "default": "./dist/schemas/zod.js"
+    },
+    "./schemas/valibot": {
+      "types": "./dist/schemas/valibot.d.ts",
+      "default": "./dist/schemas/valibot.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "package.json",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsdown src/index.ts src/schemas/zod.ts src/schemas/valibot.ts --dts --silent",
+    "check:types": "tsc --noEmit",
+    "clean": "git clean -fdX .turbo dist",
+    "dev": "pnpm build --watch --no-clean",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@agentcommercekit/keys": "workspace:*",
+    "did-resolver": "^4.1.0",
+    "key-did-resolver": "^4.0.0",
+    "pkh-did-resolver": "^2.0.0",
+    "valibot": "^1.1.0",
+    "varint": "^6.0.0"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@types/varint": "^6.0.3",
+    "eslint": "^9.27.0",
+    "tsdown": "^0.11.12",
+    "typescript": "^5",
+    "vitest": "^3.1.4",
+    "zod": "^3.25.4"
+  },
+  "peerDependencies": {
+    "zod": "^3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "zod": {
+      "optional": true
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

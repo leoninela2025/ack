@@ -1,0 +1,49 @@
+{
+  "name": "@repo/cli-tools",
+  "version": "0.0.1",
+  "private": true,
+  "homepage": "https://github.com/agentcommercekit/ack#readme",
+  "bugs": "https://github.com/agentcommercekit/ack/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agentcommercekit/ack.git",
+    "directory": "tools/cli-tools"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Catena Labs",
+    "url": "https://catenalabs.com"
+  },
+  "type": "module",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    }
+  },
+  "main": "./src/index.ts",
+  "scripts": {
+    "check:types": "tsc --noEmit",
+    "clean": "git clean -fdX .turbo dist",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^7.5.1",
+    "figlet": "^1.8.1",
+    "strip-ansi": "^7.1.0",
+    "wrap-ansi": "^9.0.0",
+    "yoctocolors": "^2.1.1"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@types/figlet": "^1.7.0",
+    "@types/node": "^22",
+    "eslint": "^9.27.0",
+    "typescript": "^5",
+    "vitest": "^3.1.4"
+  }
+}

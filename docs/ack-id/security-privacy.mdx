@@ -1,0 +1,26 @@
+---
+title: Security and Privacy
+description: Key security and privacy considerations for implementing ACK-ID.
+---
+
+Implementing a robust identity system like ACK-ID requires careful attention to security and privacy best practices.
+
+## Key Management
+
+Securely generating, storing, using, and rotating the cryptographic private keys associated with Owner and Agent DIDs is paramount. Compromised keys can lead to identity theft and unauthorized actions. Refer to the [Implementation Challenges](/ack-id/implementation-challenges#key-management-complexity) section for mitigation strategies like using KMS or HSMs.
+
+## Selective Disclosure
+
+A major privacy benefit of Verifiable Credentials (VCs) is the ability for agents to reveal only the specific information necessary for a given interaction, without exposing their entire identity profile or all associated credentials. For example, an agent can present a VC proving it is authorized to make a payment up to a certain limit, without revealing other unrelated credentials it might hold. This minimizes unnecessary data exposure.
+
+## Data Minimization
+
+Implementations should follow the principle of data minimization. Only essential identity attributes required for the specific use case should be included in VCs or requested during verification. Avoid collecting or storing unnecessary identity information.
+
+## Standard Security Practices
+
+Beyond key management, standard security practices are essential:
+
+- **Prevent Forgery:** Rely on cryptographic signature verification for all VCs to ensure an agent truly controls the DID it claims
+- **Prevent Replay Attacks:** Use mechanisms like nonces or timestamps within protocols where appropriate to ensure credentials or authentication messages are not reused maliciously.
+- **Secure Communication:** Use encrypted communication channels (e.g., TLS/HTTPS) for all interactions involving DIDs or VCs.

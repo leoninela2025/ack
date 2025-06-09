@@ -1,0 +1,46 @@
+{
+  "name": "@examples/local-did-host",
+  "version": "0.0.1",
+  "private": true,
+  "homepage": "https://github.com/agentcommercekit/ack#readme",
+  "bugs": "https://github.com/agentcommercekit/ack/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agentcommercekit/ack.git",
+    "directory": "examples/local-did-host"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Catena Labs",
+    "url": "https://catenalabs.com"
+  },
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "check:types": "tsc --noEmit",
+    "clean": "git clean -xdf .turbo",
+    "dev": "dotenv -e .env -- tsx watch ./bin/serve.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "setup": "./bin/setup",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@agentcommercekit/did": "workspace:*",
+    "@agentcommercekit/jwt": "workspace:*",
+    "@agentcommercekit/keys": "workspace:*",
+    "@hono/node-server": "^1.14.2",
+    "@hono/valibot-validator": "^0.5.2",
+    "@repo/api-utils": "workspace:*",
+    "hono": "^4.7.10",
+    "valibot": "^1.1.0"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:^",
+    "@repo/typescript-config": "workspace:*",
+    "dotenv-cli": "^8.0.0",
+    "eslint": "^9.27.0",
+    "tsx": "^4.19.4",
+    "vitest": "^3.1.4"
+  }
+}

@@ -1,0 +1,40 @@
+---
+title: "Components and Roles"
+description: "Key components and their roles within the ACK-Pay payment protocol."
+---
+
+## Role Definitions
+
+The ACK-Pay protocol defines several key components that interact to facilitate payments:
+
+- **Client Applications and Client Agents:** Software initiating service requests or payments on behalf of end-users or autonomous processes. In the Client-Initiated sequence, they are responsible for constructing the Payment Request.
+- **Servers, Server Agents and Service Providers:** Entities providing resources or services that may require payment and need to verify payment receipts before granting access or fulfilling requests. In the Server-Initiated sequence, they are responsible for generating and sending the Payment Request.
+- **Payment Service:** A crucial intermediary responsible for managing payment execution. Its functions can include:
+  - Routing payments across different networks.
+  - Assisting Clients in constructing Payment Requests (in Client-Initiated sequences).
+  - Handling currency/asset conversions.
+  - Interacting with underlying Settlement Networks.
+  - Performing risk assessments and compliance verification (potentially using ACK-ID).
+  - Managing human approval workflows.
+  - Coordinating with Receipt Services.
+  - Abstracting diverse payment methods, including traditional rails (ACH, card networks via APIs like Visa Intelligent Commerce or Mastercard Agent Pay), and blockchain networks.
+  - Optionally acting as a bridge to other protocols by exposing compatible interfaces (e.g., functioning as an x402 Facilitator for servers using that approach).
+- **Receipt Service:** Generates and validates cryptographically verifiable receipts (typically as Verifiable Credentials), ensuring:
+  - Secure credential issuance based on confirmed payment settlement.
+  - Management of receipt status (e.g., validity, revocation).
+  - Validation of presented receipts. _(Note: The Payment Service and Receipt Service roles may sometimes be fulfilled by the same entity)._
+- **Settlement Networks:** The underlying financial infrastructures that execute value transfer (e.g., traditional banking systems, card networks, blockchain networks).
+
+These roles define the actors within the ACK-Pay ecosystem that orchestrate payment flows. The next section will explore how these actors collaborate with one another.
+
+## Component Interactions with a Payment Service
+
+The following component activity diagram illustrates a sophisticated flow involved a Payment Service.
+
+!["Components and Roles Diagram"](/images/componentsandroles.png)
+
+## Component Interactions with Client-Executed Payments
+
+The following component activity diagram illustrates a simple flow in which a Client Agent executes a payment directly via an embedded Payment Service.
+
+!["Components and Roles Diagram"](/images/nopaymentservice.png)

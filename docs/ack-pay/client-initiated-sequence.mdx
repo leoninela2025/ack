@@ -1,0 +1,51 @@
+---
+title: "Client-Initiated Sequence"
+description: "Details of the ACK-Pay flow initiated by a Client Agent based on a known obligation."
+---
+
+import ClientSequence from "/snippets/client-sequence.mdx"
+
+This sequence is employed when a Client agent needs to pay based on a known obligation (e.g., an invoice, e-commerce checkout, user instruction) without first receiving a [Payment Request](/ack-pay/payment-request-payload) from the Server/recipient.
+
+## Sequence Steps
+
+1. **Identify Obligation & Construct Payment Request:** The Client agent determines the need to pay a specific `recipient` a target `amount` and `currency`. It gathers necessary details from the source of the obligation (e.g., parsing an invoice, extracting data from a web checkout page, or receiving human end-user instructions). The Client then constructs the Payment Request, potentially with assistance from a known Payment Service to format the details correctly or determine recipient identifiers.
+2. **Identify Payment Service:** The Client identifies a suitable Payment Service to execute the constructed Payment Request. This Payment Service may be pre-configured or dynamically discovered based on criteria like supported pay-in/pay-out methods specified or implied in the obligation, fees, speed, reputation, compliance capabilities.
+3. **Initiate Transaction & Optionally Negotiate Additional Detail:** The Client interacts directly with the chosen Payment Service's endpoint for payment initiation. The specific API is defined by the Payment Service, but the request must convey:
+   - The ultimate `recipient` identifier and the target `amount`/`currency`.
+   - Details of the payment method the Client will use for funding.
+   - Necessary reference information (e.g., invoice number, order ID).
+   - Authentication credentials for the client agent (potentially leveraging ACK-ID).
+4. **Approvals and HITL:** The Client and Payment Service may optionally exchange further details or Human-in-the-Loop approvals as needed (e.g., specific pay-in instructions, risk checks, or or other dynamic interactions).
+5. **Payment Execution:** The Client authorizes the Payment Service to execute the payment according to the selected option. The Payment Service handles the interaction with the underlying Settlement Network, including any necessary conversions or compliance checks.
+6. **Receipt Issuance:** Upon successful settlement, the Payment Service (or its designated Receipt Service) issues an ACK Receipt (a Verified Credential) back to the initiating Client Agent. Optionally, the original requesting source or the final recipient may also be notified via the optional `serviceCallback` parameter if provided during initiation.
+
+## Sequence Diagram
+
+<ClientSequence />
+
+## Examples
+
+### Example: Automated B2B Invoice Payment
+
+Consider a manufacturing company's procurement agent that receives confirmation of successful goods delivery linked to Invoice #INV-9876 from Supplier Y (\$10,000 USD):
+
+1. The agent identifies the obligation from the invoice data. It constructs the payment details (pay \$10,000 USD to Supplier Y, reference #INV-9876). It may optionally interact with a Payment Service API to help format these details or resolve recipient bank information if needed.
+2. It uses a pre-configured Payment Service agreed upon during supplier onboarding (accepts ACH from manufacturer, settles via wire to supplier).
+3. The agent calls the Payment Service API, providing the constructed payment details and its own authenticated credentials.
+4. The Payment Service validates, performs compliance checks, initiates ACH debit, executes the wire transfer, and confirms settlement.
+5. The Payment Service issues an ACK receipt to the manufacturer's agent, providing verifiable proof of payment linked to Invoice #INV-9876.
+
+### Example: AI Shopping Agent Checkout
+
+Consider an AI shopping agent, funded via a user's EUR bank account (converted to EURC custodied by the agent), tasked with purchasing an item from a standard e-commerce website that accepts USD credit cards:
+
+1. Navigate & Add to Cart: The agent navigates the website, adds the desired item to the shopping cart, and proceeds to the merchant’s checkout.
+2. Parse Final Order Summary & Construct Request: On the final checkout page, the website displays the total order cost (\$50 USD) and Order ID (ORD-12345). The agent parses this to determine the `targetAmount`, `targetCurrency`, `recipientIdentifier` (merchant), and `referenceId`. It uses this information to construct an internal representation of the payment obligation, analogous to the Payment Request.
+3. Identify Payment Service: The agent uses its pre-configured Payment Service that specializes in EURC-to-USD virtual card generation.
+4. Initiate Payment: The agent calls the Payment Service API, providing the constructed payment details (settle \$50 USD to merchant for ORD-12345) and specifying EURC as its funding source.
+5. Execute & Settle: The Payment Service debits the EURC, generates a single-use USD virtual card, programmatically inputs the card details into the merchant's checkout, and receives confirmation.
+6. Issue Receipt: The Payment Service issues an ACK receipt to the shopping agent, confirming \$50 USD was paid for Order ID "ORD-12345".
+7. Finalize Order (If Needed): The agent uses the confirmation/receipt to perform any final steps on the merchant site.
+
+This client-initiated sequence demonstrates the flexibility of the ACK ecosystem, allowing sophisticated payment orchestration while leveraging the core components (Payment Service, Receipt Service) and the verifiable receipt for trust and auditability.

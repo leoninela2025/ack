@@ -1,0 +1,27 @@
+---
+title: "Identity Model"
+description: "Linking Agents to Owners and distinguishing Agent vs. Service Consumer Identity."
+---
+
+## Agent Ownership
+
+ACK-ID employs a clear model to define the relationship between the accountable **Owner** (a person or organization) and the **Agent** acting on their behalf:
+
+- **Owner Identity:** Represents the human or legal entity (e.g., a company) ultimately responsible for the agent's actions. This identity is typically long-lived and tied to real-world verification processes (like KYC/KYB).
+- **Agent Identity:** Represents the AI agent itself. This identity derives its authority from the Owner Identity and is used by the agent to authenticate itself during interactions. Agent Identities can be permanent or temporary (e.g., for specific tasks), but are always linked back to a verified Owner Identity.
+
+![Identity model clarifying the relationship between Owner and Agent](/images/idmodel.png)
+
+This hierarchical link is crucial for accountability and compliance in commercial interactions. It ensures that even autonomous agents operate under a clear chain of responsibility.
+
+ACK-ID employs identity standards like Decentralized Identifiers and Verifiable Credentials to implement the relationship between these identities. These standards are explored in the section [Identity Standards](/ack-id/standards).
+
+## Agent Identity vs. Service Consumer Identity
+
+It is important to distinguish this **Agent Identity** (representing the AI agent and its owner/authority) from the identity of the **Service Consumer** (often called the end-user).
+
+The Service Consumer is the specific entity interacting with or benefiting from the agent's services at a particular time. This Consumer could be a human, another autonomous agent, a device, or a software application.
+
+A single agent may serve many different Service Consumers concurrently.
+
+Authenticating the Service Consumer involves separate, parallel mechanisms appropriate for the consumer type (e.g., OAuth/SAML for humans, API keys for applications, potentially other agent identity credentials for delegated agents). ACK-ID focuses specifically on verifying the agent entity providing the service, complementing rather than replacing Service Consumer authentication processes.

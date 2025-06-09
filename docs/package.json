@@ -1,0 +1,25 @@
+{
+  "name": "@docs/agentcommercekit",
+  "version": "0.0.1",
+  "private": true,
+  "homepage": "https://github.com/agentcommercekit/ack#readme",
+  "bugs": "https://github.com/agentcommercekit/ack/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/agentcommercekit/ack",
+    "directory": "docs"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Catena Labs",
+    "url": "https://catenalabs.com"
+  },
+  "scripts": {
+    "clean": "git clean -fdX .turbo dist",
+    "docs": "mintlify dev"
+  },
+  "devDependencies": {
+    "mintlify": "^4.0.538"
+  },
+  "packageManager": "pnpm@10.11.0"
+}

@@ -1,0 +1,159 @@
+---
+title: ACK-ID Agent Demo
+description: "Detailed step-by-step guide demonstrating ACK-ID identity verification between agents."
+---
+
+## Overview
+
+**ACK-ID** is a protocol built on W3C Standards designed to ensure verifiable, secure, and compliant identity, reputation, and service discovery for autonomous agents.
+
+This interactive command-line demo guides you through:
+
+- **Owner Identity Creation**: Establish unique decentralized identifiers (DIDs) for entities (individuals or organizations) that offer AI agents.
+- **Agent Identity Creation**: Assign distinct DIDs to AI agents, linked to their respective owners.
+- **Verifiable Credential (VC) Issuance**: Generate digitally signed, tamper-proof credentials proving agent ownership.
+- **Agent-to-Agent Verification**: Demonstrate secure verification of agent identities before or during interactions.
+
+## Demo Video
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/CDJ8pm_KlOw"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+></iframe>
+
+## Getting Started
+
+Before running this demo, follow the [Quickstart Guide](./quickstart) to ensure you are set up properly.
+
+This demo requires either an Anthropic API key or an OpenAI API key.
+
+You may set them in your `<root>/demos/identity/.env` file:
+
+```env
+ANTHROPIC_API_KEY=your_anthropic_key
+OPENAI_API_KEY=your_openai_key
+```
+
+## Running the Demo
+
+Execute the following from the repository root:
+
+```sh
+pnpm run demo:identity
+```
+
+Alternatively, from within the demo directory (`./demos/identity`):
+
+```sh
+pnpm start
+```
+
+## Demo Walkthrough
+
+The interactive CLI guides you through these steps:
+
+<Steps>
+<Step title="Agent Setup">
+Two agents (Client and Server) and their "Owners" are created, each with their own public/private keypairs. DIDs represent their public keys, and each Agent DID points to its Owner.
+</Step>
+
+<Step title="Ownership Proof">
+  Owners issue Verifiable Credentials (`ControllerCredential`) asserting their
+  control over their respective agents.
+</Step>
+
+<Step title="Communication Initiation">
+  Client and Server Agents start HTTP servers. The Client attempts
+  communication; the Server demands identity verification first.
+</Step>
+
+<Step title="DID Exchange">
+  The Server requests the Client's DID (`did:web:...`) for verification.
+</Step>
+
+<Step title="Identity Verification">
+  Server performs a DID lookup, finds the Client's service endpoint, and
+  privately requests the `ControllerCredential`. The Server verifies these
+  credentials.
+</Step>
+
+<Step title="Interaction Fulfillment">
+After verification, the Server fulfills the Client's initial request.
+</Step>
+</Steps>
+
+## Example DID Methods Supported
+
+ACK-ID supports multiple DID resolution methods, notably:
+
+- **did\:web**: Web-hosted DID Documents secured via SSL (e.g., `did:web:catenalabs.com`).
+- **did\:key**: DID Documents with embedded public keys (e.g., `did:key:zQ3shg46zUAV...`). No key rotation supported.
+- **did\:pkh**: Uses blockchain addresses (e.g., `did:pkh:eip155:84532:0xED89...`). No key rotation supported.
+
+View a comprehensive list of DID methods [here](https://w3c.github.io/did-extensions/methods/#did-methods).
+
+## DID Documents Explained
+
+DID Documents broadcast public keys and essential metadata:
+
+### Minimal `did:key` Document Example:
+
+```json
+{
+  "@context": ["https://www.w3.org/ns/did/v1"],
+  "id": "did:key:zQ3shg46zUAV...",
+  "verificationMethod": [
+    {
+      "id": "did:key:zQ3shg46zUAV...#jwk-1",
+      "type": "EcdsaSecp256k1VerificationKey2019",
+      "controller": "did:key:zQ3shg46zUAV...",
+      "publicKeyJwk": { "kty": "EC", "crv": "secp256k1" }
+    }
+  ]
+}
+```
+
+### Complete `did:web` Document Example:
+
+```json
+{
+  "@context": ["https://www.w3.org/ns/did/v1"],
+  "id": "did:web:agent.example.com",
+  "verificationMethod": [
+    {
+      "id": "did:web:agent.example.com#jwk-1",
+      "type": "EcdsaSecp256k1VerificationKey2019",
+      "controller": "did:web:agent.example.com",
+      "publicKeyJwk": { "kty": "EC", "crv": "secp256k1" }
+    }
+  ],
+  "controller": "did:key:zQ3shg46zUAV...",
+  "service": [
+    {
+      "id": "did:web:agent.example.com/v1/messages",
+      "type": "MessagingEndpoint",
+      "serviceEndpoint": "http://agent.example.com/v1/messages"
+    },
+    {
+      "id": "did:web:agent.example.com/identity",
+      "type": "IdentityService",
+      "serviceEndpoint": "http://agent.example.com/identity"
+    }
+  ]
+}
+```
+
+**Note**: DID methods must support custom attributes for enhanced DID Documents (e.g., `did:web`). Methods like `did:key` and `did:pkh` are more restrictive.
+
+---
+
+## Further Exploration
+
+- [View Identity Demo Source Code](https://github.com/agentcommercekit/ack/tree/main/demos/identity)
+- [ACK Documentation](https://agentcommercekit.com)
+- [ACK-ID Protocol Details](/ack-id/introduction)

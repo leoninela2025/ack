@@ -1,0 +1,25 @@
+#!/usr/bin/env sh
+
+#
+# This file initializes the repository for local development and CI.
+#
+# This file should be run after cloning the repository for the first time, but
+# is safe to run multiple times.
+#
+
+# Install dependencies
+echo "✨ Installing dependencies ..."
+pnpm install --frozen-lockfile
+
+# Build the project packages
+echo "\n✨ Building packages ..."
+pnpm run build
+
+# Run setup scripts
+echo "\n✨ Running setup scripts ..."
+pnpm exec turbo setup
+
+#
+# Done.
+#
+echo "\n🎉 All set. Happy coding!"

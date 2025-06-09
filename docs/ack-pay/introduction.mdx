@@ -1,0 +1,21 @@
+---
+title: "Introduction to ACK-Pay"
+description: "Agent-Native Payments Protocol for the Agent Economy"
+---
+
+![ACK-Pay Illustration](/images/ackpay.png)
+
+The ACK Payment Protocol (ACK-Pay) identifies a common pattern designed to facilitate secure, verifiable, and interoperable financial transactions among autonomous agents, services, and human participants. Although some specific ACK-Pay services and implementations use only HTTP, the pattern supports a wide range of other communication mechanisms. It defines standard payloads and interactions that extend beyond HTTP, enabling payments across various communication protocols while incorporating rigorous compliance capabilities, human oversight integration, and adaptable settlement methods.
+
+The need for new financial infrastructure tailored to AI agents is underscored by recent initiatives from major payment networks, such as Visa Intelligent Commerce and Mastercard Agent Pay, which aim to enable secure, tokenized payments initiated by verified agents within their ecosystems. ACK-Pay provides an open, interoperable standard that encompasses and works alongside these network-specific solutions, and alongside stablecoin-oriented blockchain solutions such as Coinbase’s [x402](http://x402.org) and other similar 402-oriented implementations, such as l402, h402, and others that fit the general ACK-Pay pattern.
+
+While ACK-Pay can operate independently, its functionality and security are significantly enhanced when integrated with the [ACK-ID identity protocol](/ack-id/introduction), enabling stronger authentication and accountability through verifiable agent identities and clear chains of ownership.
+
+ACK-Pay addresses four fundamental elements essential to automated financial interactions:
+
+1. **Payment Initiation:** Clearly communicating payment requirements from Services to Client agents, or enabling Clients to initiate payments based on known obligations.
+2. **Execution Flexibility:** Executing payments securely across diverse financial systems via intermediary Payment Services.
+3. **Receipt Verification:** Providing cryptographically verifiable receipts (as Verifiable Credentials) for payment confirmation.
+4. **Oversight Integration:** Integrating strategic human oversight at critical points in the payment lifecycle.
+
+This section details the core payment flows, components, payload formats, and operational considerations for ACK-Pay.

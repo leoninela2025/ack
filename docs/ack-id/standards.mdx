@@ -1,0 +1,50 @@
+---
+title: "Identity Standards"
+description: "Understanding Decentralized Identifiers (DIDs) and Verifiable Credentials (VCs) used in ACK-ID."
+---
+
+To implement and verify agent identity securely and interoperably, ACK-ID leverages two key W3C open standards: Decentralized Identifiers (DIDs) and Verifiable Credentials (VCs), explained below.
+
+## Decentralized Identifiers (DIDs)
+
+Think of DIDs as globally unique, permanent digital IDs that agents (and their owners) can create and control without needing permission from a central registration authority like ICANN for domain names or like a government for national IDs. Unlike traditional usernames or identifiers issued by a single company, DIDs are independent and cryptographically secured.
+
+An agent uses its DID to identify itself. Associated with each DID are cryptographic keys (public keys listed in a "DID Document," and private keys held securely by the controller) that allow the agent to prove control over that DID – for example, by digitally signing messages or responding to authentication challenges. ACK-ID uses DIDs to represent both Owner and Agent identities, forming the anchor for the identity model.
+
+In addition to public key information, DID Documents may optionally contain service endpoints. These endpoints can specify network locations (like URLs) where other parties can interact with the agent or related services.
+
+<Card
+  title="DID Specification"
+  icon="link"
+  href="https://www.w3.org/TR/did-core"
+>
+  The official W3C Decentralized Identifier Specification is available here:
+  https://www.w3.org/TR/did-core/
+</Card>
+
+## Verifiable Credentials (VCs)
+
+While DIDs provide unique identifiers, Verifiable Credentials (VCs) provide a standard way to make verifiable statements _about_ those identifiers. Think of VCs as digital, tamper-proof versions of physical credentials like a driver's license, a diploma, or a membership card, but designed for the digital realm.
+
+VCs contain statements or "claims" made by a trusted **Issuer** about a **Subject** (e.g., an agent identified by its DID). These claims are digitally signed by the Issuer using their own DID and cryptographic keys. This signature allows anyone (as a **Verifier**) who trusts the Issuer to verify the authenticity and integrity of the claims about the Subject.
+
+In ACK-ID, VCs are crucial for conveying authorization and status. Practical examples include:
+
+- A licensed financial institution (Issuer) issues a VC stating that a specific Agent DID (Subject) is authorized to operate under its financial services license (Claim). This enables verifiers to trust that the agent's actions comply with financial regulations.
+- An enterprise (Issuer) issues a VC to an employee's Agent DID (Subject), authorizing it to access corporate resources or execute transactions (Claim). This ensures agents act within defined corporate policies.
+- A regulatory body (Issuer) issues a VC confirming that an Agent DID (Subject) complies with security, privacy, or ethical AI guidelines established by relevant industry standards (Claim). This reassures verifiers that the agent meets necessary operational standards.
+
+!["title"](/images/vc.png)
+
+<Card
+  title="VC Data Model Specification"
+  icon="link"
+  href="https://www.w3.org/TR/vc-data-model/"
+>
+  The official W3C Verifiable Credentials data model specification is available
+  here: https://www.w3.org/TR/vc-data-model/
+</Card>
+
+By using DIDs and VCs together, ACK-ID provides a standard, cryptographically secure, and privacy-preserving way to manage agent identities and permissions.
+
+This approach aligns with broader efforts in the decentralized identity community aimed at creating trustworthy digital interactions, including conceptual frameworks like the LOKA protocol which also leverage these foundational standards for agent identity and governance.

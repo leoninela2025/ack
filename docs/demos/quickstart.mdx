@@ -1,0 +1,67 @@
+---
+title: Quickstart
+description: "Quickly set up the Agent Commerce Kit (ACK) and run demos and examples."
+---
+
+This guide helps you rapidly set up your local environment, clone the repository, and start running interactive demos and examples for the **Agent Commerce Kit (ACK)**.
+
+## Prerequisites
+
+Ensure you have the following installed:
+
+- [Node.js](https://nodejs.org/) (version 22.x or later recommended)
+- [`git`](https://git-scm.com/downloads)
+
+### Installing pnpm
+
+ACK uses [`pnpm`](https://pnpm.io/) for dependency management. If you're running Node.js v22.x or later, you can install and manage `pnpm` easily using Node's built-in `corepack`:
+
+```sh
+corepack enable
+```
+
+Now, running any subsequent `pnpm` command will automatically install the correct version.
+
+## Clone the Repository
+
+Clone the ACK repository locally using git:
+
+```sh
+git clone https://github.com/agentcommercekit/ack.git
+cd ack
+```
+
+## Set Up Your Local Environment
+
+From the repository root, run the following command to install dependencies and set up local environment variables:
+
+```sh
+pnpm run setup
+```
+
+This prepares your system to run ACK demos and examples.
+
+## Security Considerations
+
+<Warning>
+These demos use testnet environments and example API keys. **They are strictly for educational and development purposes and must not be used in production environments.**
+
+Always handle your API keys securely and responsibly, and never expose sensitive information publicly.
+
+</Warning>
+
+## Explore ACK
+
+Start exploring ACK through interactive demos:
+
+- **[Demos Overview](./demos)** – Introductory overview and detailed walkthroughs of demos.
+- **[Code Examples](./examples)** – Focused examples demonstrating specific functionalities.
+
+## Next Steps
+
+Further deepen your understanding of ACK:
+
+- [ACK Documentation](https://agentcommercekit.com)
+- [Contributing Guide](/resources/contributing)
+
+Enjoy exploring ACK!

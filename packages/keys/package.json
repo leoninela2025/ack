@@ -1,0 +1,70 @@
+{
+  "name": "@agentcommercekit/keys",
+  "version": "0.1.0",
+  "homepage": "https://github.com/agentcommercekit/ack#readme",
+  "bugs": "https://github.com/agentcommercekit/ack/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agentcommercekit/ack.git",
+    "directory": "packages/keys"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Catena Labs",
+    "url": "https://catenalabs.com"
+  },
+  "type": "module",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./encoding": {
+      "types": "./dist/encoding/index.d.ts",
+      "default": "./dist/encoding/index.js"
+    },
+    "./ed25519": {
+      "types": "./dist/curves/ed25519.d.ts",
+      "default": "./dist/curves/ed25519.js"
+    },
+    "./secp256k1": {
+      "types": "./dist/curves/secp256k1.d.ts",
+      "default": "./dist/curves/secp256k1.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "package.json",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsdown src/index.ts src/encoding/index.ts src/curves/ed25519.ts src/curves/secp256k1.ts --dts --silent",
+    "check:types": "tsc --noEmit",
+    "clean": "git clean -fdX .turbo dist",
+    "dev": "pnpm build --watch --no-clean",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@noble/curves": "^1.9.1",
+    "@solana/codecs-strings": "^2.1.1",
+    "multiformats": "^13.3.4",
+    "uint8arrays": "^5.1.0"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "eslint": "^9.27.0",
+    "tsdown": "^0.11.12",
+    "typescript": "^5",
+    "vitest": "^3.1.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+# Clean repository
+pnpm run Clean
+
+# Build packages
+pnpm run build
+
+# Publish packages
+pnpm exec changeset publish

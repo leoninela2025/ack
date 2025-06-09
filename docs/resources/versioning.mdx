@@ -1,0 +1,28 @@
+---
+title: Versioning
+description: How ACK protocol versions are managed and identified.
+---
+
+# Versioning
+
+The Agent Commerce Kit (ACK) specifications as a whole use string-based version identifiers following the format `YYYY-MM-DD`. This date indicates when the last set of backwards-incompatible changes were introduced to the core protocols (ACK-ID or ACK-Pay).
+
+<Info>
+  The protocol version identifier will typically *not* change when updates are
+  made that maintain backwards compatibility (e.g., adding optional parameters,
+  clarifying existing behavior). This allows for incremental improvements while
+  preserving interoperability with implementations based on the same or earlier
+  compatible versions within a dated release.
+</Info>
+
+## Revisions
+
+Specific documentation versions or implementations might be marked as:
+
+- **Draft**: In-progress specifications or features, not yet stable or recommended for production use.
+- **Current**: The latest stable protocol version, ready for use and potentially receiving ongoing backwards-compatible updates under the same date identifier.
+- **Final/Legacy**: Past, complete specifications identified by their date, which will not receive further changes. New development should target the "Current" version.
+
+The **current** stable protocol version is **2025-05-04**.
+
+_(Note: Specific implementation libraries or SDKs built upon ACK may follow their own versioning schemes, like Semantic Versioning, but should clearly state which ACK protocol version `YYYY-MM-DD` they are compatible with.)_

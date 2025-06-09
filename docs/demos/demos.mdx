@@ -1,0 +1,64 @@
+---
+title: About the Demos
+description: "Interactive demos demonstrating key parts of the Agent Commerce Kit (ACK)."
+---
+
+Interactive demos and their source code serve to illustrate core patterns of the **Agent Commerce Kit (ACK)**. Each demo has a dedicated detailed walkthrough to guide exploration.
+
+We recommend running these demos from the project root, but you can also run each directly from its specific demo directory using `pnpm start`.
+
+## Identity Demo
+
+Explore ACK-ID with client and server agents securely verifying identities.
+
+- **Run the demo:**
+
+  ```sh
+  pnpm demo:identity
+  ```
+
+- [Detailed Identity Demo Walkthrough](./demo-identity)
+
+- [View Identity Demo Source Code](https://github.com/agentcommercekit/ack/tree/main/demos/identity)
+
+## Payments Demo
+
+Explore ACK-Pay with a demo of server requesting payment and a client agent completing transactions.
+
+- **Run the demo:**
+
+  ```sh
+  pnpm demo:payments
+  ```
+
+- [Detailed Payments Demo Walkthrough](./demo-payments)
+
+- [View Payments Demo Source Code](https://github.com/agentcommercekit/ack/tree/main/demos//payments)
+
+## End-to-End Demo
+
+Explore an integrated example combining both ACK-ID and ACK-Pay in an end-to-end demonstration.
+
+- **Run the demo:**
+
+  ```sh
+  pnpm demo:e2e
+  ```
+
+- [Detailed End-to-End Demo Walkthrough](./demo-e2e)
+
+- [View End-to-End Demo Source Code](https://github.com/agentcommercekit/ack/tree/main/demos/e2e)
+
+## Focused Code Examples
+
+Explore standalone examples focusing on specific ACK functionalities:
+
+- [Credential Issuer, Credential Verifier, Local DID Host Examples](./examples)
+
+## Security Note
+
+<Warning>
+  These demos and examples are designed for educational purposes, structured for
+  clarity and ease of understanding. They are **not** intended for direct use in
+  production environments.
+</Warning>

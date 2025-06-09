@@ -1,0 +1,17 @@
+---
+title: Lifecycle Management
+description: Managing the lifecycle of agent identities and credentials in ACK-ID.
+---
+
+Identities and credentials aren't static. An agent's permissions might change, an owner might transfer responsibility, or keys might be compromised. ACK-ID recognizes the need to manage the full lifecycle of DIDs and VCs to ensure the system remains secure and reflects current reality.
+
+Key lifecycle stages include:
+
+- **Issuance (Genesis):** The secure creation and distribution of DIDs for Owners and Agents, and the issuance of Verifiable Credentials (VCs) that link them or grant specific authorizations. This involves cryptographic key generation and adherence to defined issuance policies.
+- **Verification:** The process of validating identities and credentials during interactions, as detailed in the [Example Use Case](/ack-id/use-case-verification). This happens frequently throughout an agent's active life.
+- **Revocation (Sunset):** Securely invalidating credentials or DIDs when an agent is decommissioned, its permissions change, or a key is compromised. Implementing efficient and privacy-preserving status checking mechanisms (e.g., using standardized Status Lists like W3C Status List 2021) is crucial for timely revocation.
+- **Updates/Transfers:** Handling changes in ownership or delegated authority. This typically involves revoking old credentials and issuing new ones reflecting the updated relationships or permissions. DID documents may also need updating (e.g., changing the controller).
+
+![Lifecycle Management Diagram](/images/lifecycle.png)
+
+Robust lifecycle management processes ensure that trust decisions are based on current, valid information and that the identity system remains secure throughout the operational lifespan of agents and their associated credentials.

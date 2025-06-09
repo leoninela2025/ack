@@ -1,0 +1,154 @@
+---
+title: Architecture
+description: High-level architecture of ACK roles and interaction patterns.
+---
+
+import ClientSequence from "/snippets/client-sequence.mdx"
+import ServerSequence from "/snippets/server-sequence.mdx"
+
+The ACK architecture provides a modular framework designed to facilitate secure, verifiable, and compliant interactions among autonomous agents, human participants, and networked resources. ACK combines identity verification (ACK-ID), transactional integrity (ACK-Pay), and flexible human oversight into a cohesive, interoperable ecosystem.
+
+## Roles
+
+ACK defines several functional roles that can be implemented flexibly, depending on specific use cases and organizational needs:
+
+| Role                   | Description                                                                                                                                                                                                               |
+| :--------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Client Agent**       | Systems initiating service requests or payments on behalf of end-users or autonomous processes (e.g., applications, other agents).                                                                                        |
+| **Server Agent**       | Systems delivering services/resources, verifying identities (ACK-ID) and receipts (ACK-Pay), and fulfilling requests (e.g., APIs, service agents, MCP providers).                                                         |
+| **Identity Provider**  | Services issuing and verifying identity credentials (DIDs/VCs via ACK-ID) to establish trust.                                                                                                                             |
+| **Payment Service**    | Manages ACK-Pay payment execution, acting as an intermediary handling settlement, compliance, conversions, and human oversight flows. Payment Services may be implemented as agents, or as API services exposed by tools. |
+| **Receipt Service**    | Issues and validates cryptographically verifiable ACK Receipts (as Verifiable Credentials) upon payment confirmation.                                                                                                     |
+| **Settlement Network** | Underlying financial infrastructures processing value transfer (e.g., banking rails, card networks, blockchains).                                                                                                         |
+
+<Info>
+  Organizations implementing ACK may map these roles flexibly. Multiple roles
+  might be combined into a single service, or roles might be distributed across
+  specialized components.
+</Info>
+
+## Core Interaction Patterns
+
+ACK outlines two primary interaction patterns: **Server-Initiated** and **Client-Initiated** sequences. Both patterns leverage the Payment Service to handle the complexities of payment execution and utilize the standardized ACK Receipt as verifiable proof.
+
+<CardGroup cols={2}>
+  <Card title="Server-Initiated Sequence" href="#server-initiated-sequence">
+    This pattern is typically used when a Server Agent requires payment before
+    fulfilling a Client Agent's request for a resource or service.
+  </Card>
+  <Card title="Client-Initiated Sequence" href="#client-initiated-sequence">
+    This pattern is used when a Client Agent initiates a payment based on a
+    known out-of-band obligation (e.g., paying an invoice or completing an
+    e-commerce checkout).
+  </Card>
+</CardGroup>
+
+### Server-Initiated Sequence
+
+Below is an overview of the Server-Initiated Sequence:
+
+<ServerSequence />
+
+<Steps>
+  <Step title="Client Request & Optional Identity Verification">
+    Client Agent requests a service/resource from the Server Agent. The Server
+    Agent may optionally verify the Client's identity (requesting Proof of
+    Agency) before replying.
+  </Step>
+  <Step title="Server Sends Payment Request & Optional Identity Verification">
+    Server Agent determines payment is needed and sends a standardized ACK-Pay
+    Payment Request payload to the Client (idiomatically via HTTP 402, or
+    embedded in other protocols). The Client Agent optionally verifies the
+    identity of the Server Agent.
+  </Step>
+  <Step title="Client Interacts with Payment Service">
+    Client Agent selects a payment option from the Payment Request and interacts
+    with the designated Payment Service. This interaction may involve optional
+    mutual Proof of Agency between the Client and Payment Service, or additional
+    requirements based upon various risk triggers. Human-in-the-loop approvals
+    may occur at this stage.
+  </Step>
+  <Step title="Payment Execution by Payment Service">
+    Payment Service executes the payment. This may include currency conversions,
+    compliance checks, or additional internal approvals.
+  </Step>
+  <Step title="Receipt Generation & Optional Server Callback">
+    Payment Service confirms successful payment and coordinates with the Receipt
+    Service to request a verifiable ACK Receipt (as a Verifiable Credential). If
+    a callback URL was included in the original Payment Request, the Payment
+    Service transmits the Receipt to the Server Agent via the callback.
+  </Step>
+  <Step title="Receipt Delivery to Client">
+    Payment Service returns the ACK Receipt to the Client Agent.
+  </Step>
+  <Step title="Client Presents Receipt to Server">
+    Client Agent presents the ACK Receipt to the Server Agent (typically when
+    re-requesting the resource or in a follow-up interaction). This may not be
+    necessary if a Server callback occurs.
+  </Step>
+  <Step title="Server Verifies Receipt & Delivers Service">
+    Server Agent verifies the ACK Receipt (cryptographically, and against its
+    policies) and, if valid, delivers the requested service/resource.
+  </Step>
+</Steps>
+
+### Client-Initiated Sequence
+
+Below is an overview of the Client-Initiated Sequence:
+
+<ClientSequence />
+
+<Steps>
+  <Step title="Identify Obligation & Construct Payment Request">
+    Client Agent identifies the payment obligation (recipient, amount, currency,
+    reference). The Client Agent then constructs a structured Payment Request
+    payload, potentially using a Payment Service API for assistance (e.g., to
+    parse an invoice, a shopping cart summary, or interpret an end-user's
+    instruction).
+  </Step>
+  <Step title="Select Payment Service & Initiate Payment">
+    Client Agent selects/identifies an appropriate Payment Service (which may be
+    pre-configured or dynamically discovered). The Client Agent provides its
+    identity proof to the Payment Service.
+  </Step>
+  <Step title="Authorize Payment & Optional Identity Verification">
+    Client Agent interacts directly with the Payment Service's API to authorize
+    the payment. This interaction may involve optional mutual Proof of Agency
+    between the Client and Payment Service, or additional requirements based
+    upon various risk triggers. Human-in-the-loop approvals may occur here.
+  </Step>
+  <Step title="Payment Execution by Payment Service">
+    Payment Service executes the payment. This may include currency conversions,
+    compliance checks, or additional internal approvals.
+  </Step>
+  <Step title="Receipt Generation & Optional Server Callback">
+    Payment Service confirms successful payment and coordinates with the Receipt
+    Service to request a verifiable ACK Receipt (as a Verifiable Credential). If
+    a callback was included in the Client's constructed Payment Request (or if
+    the Payment Service knows the ultimate recipient Server), the Payment
+    Service may transmit the Receipt to that Server Agent via a callback URL.
+  </Step>
+  <Step title="Receipt Delivery to Client & Optional Notification">
+    Payment Service returns the ACK Receipt to the Client Agent. The Client
+    Agent may then optionally inform the original recipient Server (if no
+    callback occurred) or simply persist the receipt for its own records and
+    auditing.
+  </Step>
+</Steps>
+
+## Human-in-the-Loop Integration
+
+ACK incorporates strategic human oversight at distinct levels:
+
+- **Operational Oversight:** Payment Services provide hooks for internal approval workflows, risk monitoring, and exception handling processes to ensure compliance and transaction integrity in accordance with organizational policy (e.g., manual review of high-value or suspicious transactions).
+- **User/Owner Authorization:** Client applications or agents may require explicit end-user or owner approvals for sensitive operations (e.g., confirming payments beyond a defined policy threshold), ensuring control and transparency.
+
+Human judgment integration points are further illustrated in the ACK-Pay specification, allowing intervention based on risk profiles, transaction values, or specific policy conditions.
+
+## Implementation Flexibility
+
+ACK is a pattern framework rather than a mandated technology stack. Organizations can implement the ACK protocols and patterns using preferred technologies and frameworks. ACK remains technology-agnostic, emphasizing interoperability through message formats (like the Payment Request payload and ACK Receipt VC), verification standards, and flexible interaction patterns.
+
+Agent discovery mechanisms are similarly flexible, with Clients able to discover Servers or Payment Services through direct configuration, public directories, specialized discovery services, or dynamic negotiation processes. ACK does not prescribe discovery or registry solutions, allowing integration with diverse existing and future discovery mechanisms.
+
+This architectural framework provides the foundation for the specific identity (ACK-ID) and payment (ACK-Pay) protocols detailed in subsequent sections, enabling the secure and flexible agent interactions described.

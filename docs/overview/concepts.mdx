@@ -1,0 +1,69 @@
+---
+title: Core Concepts
+description: Introducing Agent Commerce Kit Core Protocols and Design Principles.
+---
+
+The **Agent Commerce Kit (ACK)** addresses the challenges of the agent economy initially through two complementary design patterns: **ACK-ID** for identity and **ACK-Pay** for payments.
+
+<Tip>ACK is a recursive acronym: **A**CK is a **C**ommerce **K**it.</Tip>
+
+## ACK-ID: Verifiable Agent Identity
+
+ACK-ID establishes a framework for managing verifiable agent identities, ownership chains, and authorization processes. Its primary goal is to address the critical identity challenge for AI actors by providing:
+
+- **Verifiable Ownership:** Demonstrates an auditable cryptographic link from accountable legal entities (Owners) to their autonomous agents.
+- **Secure Authentication:** Enables agents to securely prove who they are and that they are authorized to act.
+- **Privacy Preservation:** Allows agents to disclose only necessary identity attributes.
+
+To achieve these goals in an interoperable way, ACK-ID utilizes the established W3C open standards [Decentralized Identifiers (DIDs)](https://www.w3.org/TR/did-core/) and [Verifiable Credentials (VCs)](https://www.w3.org/TR/vc-data-model/). However, the core patterns defined by the protocol are designed to be extensible, supporting future refinements and alternative underlying technologies.
+
+[Learn more about ACK-ID →](/ack-id/introduction)
+
+<Card
+  icon="robot"
+  iconTYpe="solid"
+  title="Why W3C Decentralized Identity Standards?"
+>
+  Technologies like DIDs and VCs unlock power and security, but in the past they
+  presented usability challenges for humans due to the complexity of
+  cryptographic key management, verification, and related operations. AI doesn't
+  have these problems. Agents can reliably manage cryptographic keys, perform
+  signing operations, and handle credential verification programmatically,
+  making these industry standards ideal for verifiable agent identity.
+</Card>
+
+## ACK-Pay: Agent-Native Payments
+
+ACK-Pay defines a pattern for initiating payments, generating verifiable receipts, and conducting secure transaction verification across diverse financial systems. Some excellent examples of the pattern such as [Coinbase's x402](https://x402.org), focus on HTTP and the 402 status code in particular. ACK-Pay includes and supports this standard approach for HTTP, while also framing the concept as a transport-agnostic pattern for agent commerce regardless of whether HTTP is employed, and regardless of underlying settlement layers.
+
+ACK-Pay aims to overcome the transaction barriers faced by AI agents by enabling:
+
+- **Standard Payment Initiation:** Clear communication of payment requirements or initiation of payments for known obligations.
+- **Flexible Execution:** Support for diverse settlement networks (traditional and blockchain-based) via intermediary Payment Services.
+- **Verifiable Proof:** Generation of standardized, cryptographically secure receipts (as Verifiable Credentials) confirming payment.
+- **Human Oversight:** Integration points for human approvals and risk management within automated flows.
+
+ACK-Pay supports seamless economic interactions between autonomous agents, services, and humans, facilitating use cases from API access and subscriptions to micropayments and B2B settlements.
+
+[Learn more about ACK-Pay →](/ack-pay/introduction)
+
+## Design Principles
+
+The design and evolution of ACK is anchored in four principles:
+
+1.  **Open Standards:** Utilizing established standards to ensure vendor-neutral solutions and broad compatibility, extensibility, and interoperability.
+2.  **Cryptographic Trust:** Eliminating dependency on central authorities for identity and payment verification where possible to avoid data leakage, using cryptographic validation while ensuring compliance with relevant regulatory requirements.
+3.  **Compliance-Ready:** Architected with regulatory requirements considered, supporting KYC/KYB and risk management imperatives without sacrificing agility.
+4.  **Human Oversight:** Incorporating strategic human oversight capabilities into transaction workflows to manage risk effectively, balancing automation with accountability.
+
+## Modularity
+
+Reflecting ACK's modular design, the ACK-ID and ACK-Pay protocols can operate independently to address specific needs (e.g., using ACK-ID purely for authentication without payments, or using ACK-Pay without requiring agent authorization).
+
+However, integrating ACK-ID's verifiable identities with ACK-Pay's payment mechanisms provides the most robust foundation for secure and compliant agent commerce. This combination allows participants in a transaction to not only execute the payment but also to make informed decisions based on verified identity attributes before proceeding. For example, systems can distinguish agents acting on behalf of licensed financial institutions from others, or assess an agent's reputation and reliability before engaging in sensitive financial activities or trusting its outputs.
+
+## Origins
+
+The Agent Commerce Kit was initially developed by [Catena Labs](https://www.catenalabs.com). As Catena Labs constructed agentic financial services, the need for shared open protocol building blocks for agent identity and payments became clear.
+
+Recognizing that these foundational layers are crucial for the entire ecosystem, Catena Labs has contributed ACK as an open-source project to foster interoperability and encourage community collaboration. The protocols and reference implementations are available under the [MIT License](/resources/license).
