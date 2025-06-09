@@ -14,9 +14,11 @@ import { PAYMENT_SERVICE_URL, RECEIPT_SERVICE_URL, chainId } from "./constants"
 import { getKeypairInfo } from "./utils/keypair-info"
 import type { PaymentRequestInit, Verifiable, PaymentReceiptCredential } from "agentcommercekit"
 import type { Env, TypedResponse } from "hono"
+import { cors } from "hono/cors"
 
 const app = new Hono<Env>()
 app.use(logger())
+app.use(cors())
 
 // Constants for payment option IDs
 const LOGISTICS_PAYMENT_OPTION_ID = "usdc-logistics-check-v1"

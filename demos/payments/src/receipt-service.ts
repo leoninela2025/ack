@@ -21,9 +21,11 @@ import { asAddress } from "./utils/as-address"
 import { getKeypairInfo } from "./utils/keypair-info"
 import type { paymentOptionSchema } from "agentcommercekit/schemas/valibot"
 import type { Env } from "hono"
+import { cors } from "hono/cors"
 
 const app = new Hono<Env>()
 app.use(logger())
+app.use(cors())
 
 const bodySchema = v.object({
   payload: v.string()
