@@ -10,7 +10,7 @@ export const SERVER_URL = "http://localhost:4567"
 export const RECEIPT_SERVICE_URL = "http://localhost:4568"
 export const PAYMENT_SERVICE_URL = "http://localhost:4569"
 export const X402_FACILITATOR_URL = "http://localhost:3002"
-export const X402_FACILITATOR_SPENDER_ADDRESS = "0x1f47CEd308dcA4a1e656D6Ab5259d7D8814b7B47"
+export const X402_FACILITATOR_SPENDER_ADDRESS = "0xa29dCb1C471D639dA47d72F53B1488F7b99255ED"
 
 /**
  * .env file location

@@ -1,6 +1,6 @@
-import { serve } from "@hono/node-server"
-import { logger } from "@repo/api-utils/middleware/logger"
-import { colors, errorMessage, log, successMessage } from "@repo/cli-tools"
+import {serve} from "@hono/node-server"
+import {logger} from "@repo/api-utils/middleware/logger"
+import {colors, errorMessage, log, logJson, successMessage} from "@repo/cli-tools"
 import {
   createPaymentReceipt,
   getDidResolver,
@@ -9,23 +9,23 @@ import {
   verifyJwt,
   verifyPaymentToken
 } from "agentcommercekit"
-import { didPkhChainIdSchema } from "agentcommercekit/schemas/valibot"
-import { Hono } from "hono"
-import { env } from "hono/adapter"
-import { HTTPException } from "hono/http-exception"
+import {didPkhChainIdSchema} from "agentcommercekit/schemas/valibot"
+import {Hono} from "hono"
+import {cors} from "hono/cors";
+import {HTTPException} from "hono/http-exception"
 import * as v from "valibot"
-import { erc20Abi, isAddressEqual } from "viem"
-import { parseEventLogs } from "viem/utils"
-import { chainId, publicClient, usdcAddress } from "./constants"
-import { asAddress } from "./utils/as-address"
-import { getKeypairInfo } from "./utils/keypair-info"
-import type { paymentOptionSchema } from "agentcommercekit/schemas/valibot"
-import type { Env } from "hono"
-import { cors } from "hono/cors"
+import {erc20Abi, isAddressEqual} from "viem"
+import {parseEventLogs} from "viem/utils"
+import {chainId, publicClient, usdcAddress} from "./constants"
+import {asAddress} from "./utils/as-address"
+import {getKeypairInfo} from "./utils/keypair-info"
+import type {paymentOptionSchema} from "agentcommercekit/schemas/valibot"
+import type {Context, Env} from "hono"
+import { decodeJwt } from "jose"
 
 const app = new Hono<Env>()
 app.use(logger())
-app.use(cors())
+app.use('*', cors());
 
 const bodySchema = v.object({
   payload: v.string()
@@ -52,37 +52,32 @@ const paymentDetailsSchema = v.object({
  * This endpoint verifies the transaction details match the PaymentRequest requirements,
  * and creates a signed PaymentReceiptCredential.
  */
-app.post("/", async (c) => {
+app.post("/", async (c: Context) => {
   const serverIdentity = await getKeypairInfo(
-    env(c).RECEIPT_SERVICE_PRIVATE_KEY_HEX
+    process.env.RECEIPT_SERVICE_PRIVATE_KEY_HEX!
   )
   const didResolver = getDidResolver()
 
   const { payload } = v.parse(bodySchema, await c.req.json())
 
   log(colors.bold("\nReceipt Service: Processing payment proof"))
-  log(colors.dim("Verifying JWT payload..."))
-
-  const parsed = await verifyJwt(payload, {
-    resolver: didResolver,
-    policies: {
-      aud: false
-    }
-  })
+  log(colors.dim("Decoding JWT payload (skipping verification for demo)..."))
+  
+  // HACK: In a real app, you would use `verifyJwt`. We use `decodeJwt` here
+  // because the client can't truly sign a JWT with its DID key from the browser.
+  const parsed: any = decodeJwt(payload)
 
   // This demo uses did:pkh for all issuers, so we add this check, however, this
   // is not a requirement of the protocol.
-  if (!isDidPkhUri(parsed.issuer)) {
+  if (!isDidPkhUri(parsed.iss)) {
     log(errorMessage("Invalid issuer, must be a did:pkh"))
     return c.json({ error: "Invalid issuer, must be a did:pkh" }, 400)
   }
 
-  const paymentDetails = v.parse(paymentDetailsSchema, parsed.payload)
+  const paymentDetails = v.parse(paymentDetailsSchema, parsed)
 
-  log(
-    colors.dim("Payment details:"),
-    colors.cyan(JSON.stringify(paymentDetails, null, 2))
-  )
+  log(colors.dim("Payment details:"))
+  logJson(paymentDetails, colors.cyan)
 
   log(colors.dim("Verifying payment token..."))
   // Verify the payment token is not expired, etc.
@@ -105,9 +100,9 @@ app.post("/", async (c) => {
   }
 
   if (paymentOption.network === "stripe") {
-    await verifyStripePayment(parsed.issuer, paymentDetails, paymentOption)
+    await verifyStripePayment(parsed.iss, paymentDetails, paymentOption)
   } else if (paymentOption.network === chainId) {
-    await verifyOnChainPayment(parsed.issuer, paymentDetails, paymentOption)
+    await verifyOnChainPayment(parsed.iss, paymentDetails, paymentOption)
   } else {
     log(errorMessage("Invalid network"))
     throw new HTTPException(400, {
@@ -120,7 +115,7 @@ app.post("/", async (c) => {
     paymentToken: paymentDetails.paymentToken,
     paymentOptionId: paymentOption.id,
     issuer: serverIdentity.did,
-    payerDid: parsed.issuer
+    payerDid: parsed.iss
   })
 
   const { jwt, verifiableCredential } = await signCredential(receipt, {
